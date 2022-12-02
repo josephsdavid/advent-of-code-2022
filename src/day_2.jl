@@ -4,12 +4,12 @@ using Test
 
 const input = readlines("data/day_2.txt")
 
-const t1 = split( "A Y\nB X\nC Z", "\n")
+const t1 = split("A Y\nB X\nC Z", "\n")
 
-const score_dict = Dict(:rock=>1,:paper=>2,:scissors=>3)
-const win_conditions = Dict(:rock=>:scissors, :paper=>:rock, :scissors=>:paper)
-const their_map = Dict("A"=>:rock,"B"=>:paper,"C"=>:scissors,)
-const our_map = Dict("X"=>:rock,"Y"=>:paper,"Z"=>:scissors)
+const score_dict = Dict(:rock => 1, :paper => 2, :scissors => 3)
+const win_conditions = Dict(:rock => :scissors, :paper => :rock, :scissors => :paper)
+const their_map = Dict("A" => :rock, "B" => :paper, "C" => :scissors)
+const our_map = Dict("X" => :rock, "Y" => :paper, "Z" => :scissors)
 const moves = (:rock, :paper, :scissors)
 
 function get_score(ours::Symbol, theirs::Symbol)
@@ -41,13 +41,13 @@ end
 @info part_1(t1)
 @info part_1(input)
 
-const strategies = Dict("X"=>:lose,"Y"=>:draw,"Z"=>:win)
+const strategies = Dict("X" => :lose, "Y" => :draw, "Z" => :win)
 
 function strategize(outcome::Symbol)
     if outcome == :draw
         return identity
     elseif outcome == :win
-        return (theirs) -> Dict(map(reverse, collect(pairs(win_conditions))))[theirs] # they are the loser
+        return (theirs) -> Dict(values(win_conditions), keys(win_conditions))[theirs] # they are the loser
     else
         return (theirs) -> win_conditions[theirs] # they are the winner
     end
