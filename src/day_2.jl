@@ -1,6 +1,5 @@
 # https://adventofcode.com/2022/day/2
 using AdventOfCode
-using Test
 
 const input = readlines("data/day_2.txt")
 
