@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+julia --project=. --startup-file=no -e "using AdventOfCode; AdventOfCode.setup_files(2022,$1; include_year=false, force=true)"
