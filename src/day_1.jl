@@ -3,7 +3,7 @@ using AdventOfCode
 
 input = read("2022/data/day_1.txt")
 
-parse_input(s) = parse.(Int64, filter(!isempty, split.(split(s, "\n\n"))))
+parse_input(s) = parse.(Int64, filter(!isempty, split.(split(s, "\n\n"), "\n)))
 
 function part_1(input)
     return maximum(sum, parse_input(input))
