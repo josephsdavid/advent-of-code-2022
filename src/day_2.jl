@@ -1,15 +1,32 @@
 # https://adventofcode.com/2022/day/2
 using AdventOfCode
 
+####
+#### input data
+####
+
 const input = readlines("data/day_2.txt")
 
 const t1 = split("A Y\nB X\nC Z", "\n")
 
+####
+#### rules of the game
+####
+
 const points_dict = Dict(:rock => 1, :paper => 2, :scissors => 3)
 const win_conditions = Dict(:rock => :scissors, :paper => :rock, :scissors => :paper)
 
+####
+#### input maps
+####
+
 const their_map = Dict("A" => :rock, "B" => :paper, "C" => :scissors)
 const our_map = Dict("X" => :rock, "Y" => :paper, "Z" => :scissors)
+const strategies = Dict("X" => :lose, "Y" => :draw, "Z" => :win)
+
+####
+#### part 1
+####
 
 function get_score(ours::Symbol, theirs::Symbol)
     score = points_dict[ours]
@@ -37,7 +54,9 @@ end
 @info part_1(t1)
 @info part_1(input)
 
-const strategies = Dict("X" => :lose, "Y" => :draw, "Z" => :win)
+####
+#### part 2
+####
 
 function execute_evil_plan(outcome::Symbol, theirs::Symbol)
     if outcome == :draw
