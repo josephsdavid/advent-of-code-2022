@@ -18,9 +18,9 @@ function part_1(input)
     end
 end
 
-part_1(t1)
+@info @btime part_1(t1)
 
-@btime part_1(input)
+@info @btime part_1(input)
 
 function part_2(input)
     return sum(input) do line
@@ -28,6 +28,6 @@ function part_2(input)
         return length(intersect(groups...)) > 0
     end
 end
-@btime part_2(t1)
+@info @btime part_2(t1)
 
-@btime part_2(input)
+@info @btime part_2(input)
