@@ -9,7 +9,7 @@ function part_1(input)
         return length(union(groups...)) == maximum(length.(groups))
     end
 end
-@info  part_1(input)
+@info part_1(input)
 
 function part_2(input)
     return sum(input) do line
@@ -17,4 +17,4 @@ function part_2(input)
         return length(intersect(groups...)) > 0
     end
 end
-@info  part_2(input)
+@info part_2(input)
