@@ -1,7 +1,8 @@
 # https://adventofcode.com/2022/day/5
 using AdventOfCode
+using BenchmarkTools
 
-t1 =
+const t1 =
 """    [D]
 [N] [C]
 [Z] [M] [P]
@@ -12,7 +13,7 @@ move 3 from 1 to 3
 move 2 from 2 to 1
 move 1 from 1 to 2"""
 
-input = readchomp("data/day_5.txt")
+const input = readchomp("data/day_5.txt")
 
 
 function parse_boxes(boxes)
@@ -80,7 +81,7 @@ function part_1(input)
 end
 part_1(t1)
 
-part_1(input)
+@info "part 1" @btime part_1(input)
 
 function part_2(input)
     boxes, instructions = split(input, "\n\n")
@@ -95,4 +96,5 @@ function part_2(input)
     return string(ret...)
 end
 part_2(t1)
-@info part_2(input)
+
+@info "part 2" @btime part_2(input)
