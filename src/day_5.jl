@@ -81,7 +81,8 @@ function part_1(input)
 end
 part_1(t1)
 
-@info "part 1" @btime part_1(input)
+@info "part 1!"
+@info @btime part_1(input)
 
 function part_2(input)
     boxes, instructions = split(input, "\n\n")
@@ -97,4 +98,5 @@ function part_2(input)
 end
 part_2(t1)
 
-@info "part 2" @btime part_2(input)
+@info "part 2!"
+@info @btime part_2(input)
