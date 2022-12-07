@@ -1,0 +1,104 @@
+# https://adventofcode.com/2022/day/7
+using AdventOfCode
+using Tables: rowmerge
+
+t1 = split("""\$ cd /
+\$ ls
+dir a
+14848514 b.txt
+8504156 c.dat
+dir d
+\$ cd a
+\$ ls
+dir e
+29116 f
+2557 g
+62596 h.lst
+\$ cd e
+\$ ls
+584 i
+\$ cd ..
+\$ cd ..
+\$ cd d
+\$ ls
+4060174 j
+8033020 d.log
+5626152 d.ext
+7214296 k""", "\n")
+
+mutable struct Tree
+    type::Any
+    name::Any
+    parent::Any
+    children::Any
+    value::Any
+end
+
+Tree() = Tree(:file, "test", nothing, [], 0)
+Tree(type, name) = Tree(type, name, nothing, [], 0)
+Tree(type, name, size) = Tree(type, name, nothing, [], size)
+Tree(type, name, size, parent) = Tree(type, name, parent, [], size)
+
+function getlinked(t::Tree)
+    if t.parent.name == "/" || t.name == "/"
+        return t.children
+    else
+        return vcat(t.parent, t.children)
+    end
+end
+
+function parse_command(current, trees, command)
+    if command[2] == "ls"
+        return current, trees
+    else
+        if command[3] == ".."
+            current = current.name =="/" ? "/" : current.parent
+            return current, trees
+        elseif command[3] == "/"
+            current = first(trees)
+            return current, trees
+        else
+            @show current
+            @show current.parent
+            current = only(
+                filter(
+                    x -> x.name == command[3] && x.type == :dir,
+                    getlinked(current),
+                ),
+            )
+            return current, trees
+        end
+    end
+end
+
+function make_trees(input)
+    trees = [Tree(:dir, "/")]
+    current = only(trees)
+    for command in input
+        command = split(command)
+        if command[1] == "\$"
+            current, trees = parse_command(current, trees, command)
+        else
+            if command[1] == "dir"
+                t = Tree(:dir, command[2], 0, current)
+            else
+                t = Tree(:file, command[2], parse(Int64, command[1]), current)
+            end
+            push!(current.children, t)
+            push!(trees, t)
+        end
+    end
+    return trees
+end
+
+input = readlines("data/day_7.txt")
+
+function part_1(input)
+    nothing
+end
+@info part_1(input)
+
+function part_2(input)
+    nothing
+end
+@info part_2(input)
