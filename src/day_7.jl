@@ -38,14 +38,6 @@ Tree(type, name) = Tree(type, name, nothing, [], 0)
 Tree(type, name, size) = Tree(type, name, nothing, [], size)
 Tree(type, name, size, parent) = Tree(type, name, parent, [], size)
 
-function getlinked(t::Tree)
-    if t.name == "/"
-        return t.children
-    else
-        return vcat(t.parent, t.children)
-    end
-end
-
 function parse_command(current, trees, command)
     if command[2] == "ls"
         return current, trees
