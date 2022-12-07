@@ -78,10 +78,9 @@ function make_trees(input)
 end
 
 function score(t::Tree)
-    tot = 0
     if t.type == :dir
         if isempty(t.children)
-            return tot
+            return 0
         end
         return sum(score, t.children)
     else
