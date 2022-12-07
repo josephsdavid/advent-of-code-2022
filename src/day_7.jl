@@ -113,6 +113,9 @@ const needed_size = 30000000
 function part_2(input)
     trees = make_trees(input)
     scores = score.(filter(x -> x.type==:dir, trees))
-    total_size = first(scores)
+    total_size = maximum(scores)
+    to_chop = needed_size - (maxsize - total_size)
+    filter!(>(to_chop), scores)
+    return minimum(scores)
 end
-@info part_2(input)
+part_2(input)
