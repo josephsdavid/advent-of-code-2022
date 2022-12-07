@@ -40,7 +40,7 @@ Tree(type, name, size) = Tree(type, name, nothing, [], size)
 Tree(type, name, size, parent) = Tree(type, name, parent, [], size)
 
 function getlinked(t::Tree)
-    if t.parent.name == "/" || t.name == "/"
+    if t.name == "/"
         return t.children
     else
         return vcat(t.parent, t.children)
@@ -58,13 +58,8 @@ function parse_command(current, trees, command)
             current = first(trees)
             return current, trees
         else
-            @show current
-            @show current.parent
             current = only(
-                filter(
-                    x -> x.name == command[3] && x.type == :dir,
-                    getlinked(current),
-                ),
+                filter( x -> x.name == command[3] && x.type == :dir, current.children),
             )
             return current, trees
         end
@@ -91,14 +86,33 @@ function make_trees(input)
     return trees
 end
 
+function score(t::Tree)
+    tot = 0
+    if t.type == :dir
+        if isempty(t.children)
+            return tot
+        end
+        return sum(score, t.children)
+    else
+        return t.value
+    end
+end
+
 input = readlines("data/day_7.txt")
 
 function part_1(input)
-    nothing
+    trees = make_trees(input)
+    dirs = filter(x -> x.type==:dir, trees)
+    sum(filter(<=(100000), score.(dirs)))
 end
-@info part_1(input)
+part_1(input)
+
+const maxsize = 70000000
+const needed_size = 30000000
 
 function part_2(input)
-    nothing
+    trees = make_trees(input)
+    scores = score.(filter(x -> x.type==:dir, trees))
+    total_size = first(scores)
 end
 @info part_2(input)
