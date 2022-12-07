@@ -1,6 +1,5 @@
 # https://adventofcode.com/2022/day/7
 using AdventOfCode
-using Tables: rowmerge
 
 t1 = split("""\$ cd /
 \$ ls
