@@ -15,6 +15,13 @@ function transpose(arr)
     return collect.(zip(arr...))
 end
 
+function do_then_undo(x, f, args...)
+    backward = ∘(args...)
+    forward = ∘(reverse(args)...)
+    return backward(f(forward(x)))
+
+end
+
 function visible(v)
     ret = zeros(eltype(v), length(v))
     for i in eachindex(v)
@@ -49,12 +56,17 @@ end
 
 input = readlines("data/day_8.txt")
 
+vis(x) = visible.(x)
+rev(x) = reverse.(x)
+
 function part_1(input)
     trees = parse_input(input)
-    left = seeing_distance.(trees)
-    top = transpose(seeing_distance.(transpose(trees)))
-    right = reverse.(seeing_distance.(reverse.(trees)))
-    bottom =transpose(reverse.(seeing_distance.(reverse.(transpose(trees)))))
+
+    left = vis(trees)
+    top = do_then_undo(trees, vis, transpose)
+    right = do_then_undo(trees, vis, rev)
+    bottom = do_then_undo(trees, vis, transpose, rev)
+
     tot = sum((left, top, right, bottom))
     isvis = map(x -> >(0).(x), tot)
     return sum(sum, isvis)
@@ -62,13 +74,17 @@ end
 part_1(testcase)
 @info part_1(input)
 
+see(x) = seeing_distance.(x)
+
 function part_2(input)
     trees = parse_input(input)
-    right = seeing_distance.(trees)
-    down = transpose(seeing_distance.(transpose(trees)))
-    left = reverse.(seeing_distance.(reverse.(trees)))
-    up =transpose(reverse.(seeing_distance.(reverse.(transpose(trees)))))
-    mats = (x->x').(reduce.(hcat, (up, down, left, right)))
+
+    right = see(trees)
+    down = do_then_undo(trees, see, transpose)
+    left = do_then_undo(trees, see, rev)
+    up = do_then_undo(trees, see, transpose, rev)
+
+    mats = reduce.(hcat, (up, down, left, right))
     return maximum(reduce( .* , mats))
 end
 part_2(testcase)
