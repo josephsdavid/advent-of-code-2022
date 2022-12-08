@@ -1,14 +1,16 @@
 # https://adventofcode.com/2022/day/8
 using AdventOfCode
 
-testcase = split("""30373
+testext = """30373
 25512
 65332
 33549
-35390""", "\n")
+35390"""
+
+testcase = split(testext, "\n")
 
 function parse_input(input)
-    map(x -> parse.(Int64, x), split.(input, ""))
+    return map(x -> parse.(Int64, x), split.(input, ""))
 end
 
 function transpose(arr)
@@ -19,7 +21,6 @@ function do_then_undo(x, f, args...)
     backward = ∘(args...)
     forward = ∘(reverse(args)...)
     return backward(f(forward(x)))
-
 end
 
 function visible(v)
@@ -28,7 +29,7 @@ function visible(v)
         if i == 1
             ret[i] = 1
         else
-            if all(v[i] .> v[begin:i-1])
+            if all(v[i] .> v[begin:(i - 1)])
                 ret[i] = 1
             end
         end
@@ -43,7 +44,7 @@ function seeing_distance(v)
             ret[i] = 0
         else
             val = v[i]
-            tall_idx = findfirst(>=(val), v[i+1:end])
+            tall_idx = findfirst(>=(val), v[(i + 1):end])
             if isnothing(tall_idx)
                 ret[i] = length(v) - i
             else
@@ -71,6 +72,7 @@ function part_1(input)
     isvis = map(x -> >(0).(x), tot)
     return sum(sum, isvis)
 end
+
 part_1(testcase)
 @info part_1(input)
 
@@ -85,8 +87,8 @@ function part_2(input)
     up = do_then_undo(trees, see, transpose, rev)
 
     mats = reduce.(hcat, (up, down, left, right))
-    return maximum(reduce( .* , mats))
+    return maximum(reduce(.*, mats))
 end
-part_2(testcase)
 
+part_2(testcase)
 @info part_2(input)
