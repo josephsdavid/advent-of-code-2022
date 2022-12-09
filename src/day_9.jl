@@ -4,13 +4,14 @@ using AdventOfCode
 input = readlines("data/day_9.txt")
 
 t1 = split("""R 4
-U 4
-L 3
-D 1
-R 4
-D 1
-L 5
-R 2""", "\n")
+       U 4
+       L 3
+       D 1
+       R 4
+       D 1
+       L 5
+       R 2""",
+           "\n")
 
 function part_1(input)
     t = [0, 0]
@@ -31,7 +32,7 @@ function part_1(input)
             basis = [-1, 0]
         end
 
-        for i in 1:mag
+        for _ in 1:mag
             h += basis
             push!(hpath, h)
 
@@ -42,10 +43,9 @@ function part_1(input)
 
             t += sign.(delta)
             push!(tpath, t)
-
         end
     end
-    length(unique(tpath))
+    return length(unique(tpath))
 end
 part_1(t1)
 
@@ -85,7 +85,6 @@ function part_2(input)
 
             temp_head = h
             for i in eachindex(tail)
-
                 delta = temp_head .- tail[i]
 
                 if all(@. abs(delta) < 2)
@@ -95,28 +94,17 @@ function part_2(input)
 
                 tail[i] += sign.(delta)
                 temp_head = tail[i]
-
             end
             @show last(tail)
 
             push!(tpath, last(tail))
-
         end
     end
-    length(unique(tpath))
+    return length(unique(tpath))
 end
 part_2(t1)
 
-t2 = [
- "R 5",
- "U 8",
- "L 8",
- "D 3",
- "R 17",
- "D 10",
- "L 25",
- "U 20",
-]
+t2 = ["R 5", "U 8", "L 8", "D 3", "R 17", "D 10", "L 25", "U 20"]
 part_2(t2)
 
 @info part_2(input)
