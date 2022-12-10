@@ -59,23 +59,29 @@ function part_2(input)
         push!(clock, current_cycle)
         push!(history, last.((clock, register_x)))
     end
-    xbounds = collect(1:40)
-    ybounds = 1:6
-    pixels = repeat([0], 241)
-    onscreen = map(history) do h
-        @show h
-        (cycle, sprite) = h
-        hassprite = any(map(x -> x ∈ (xbounds), [sprite, sprite - 1, sprite + 1]))
-        if any(hassprite)
-            pixels[cycle] = 1
+    popfirst!(history)
+    history = zip(first.(history) .- 1, last.(history))
+    row = 1
+    col = 1
+    # get_current_pixel(cycle) = cycle - row * 40
+    # pixels = repeat([0], 241)
+    pixels = zeros(Int64, 6, 40)
+    for (cycle, sprite) in history
+        if col > 40
+            col = 1
+            row += 1
         end
+        if any( ==(col).((sprite, sprite+1, sprite-1)))
+            pixels[row, col] = 1
+        end
+        col += 1
     end
     pixels
-    popfirst!(pixels)
-    ret = reshape(pixels, 6, 40)
-    for row in eachrow(ret)
-        println(row)
+    for row in eachrow(pixels)
+        println()
+        for col in row
+            print(col == 1 ? "#" : ".")
+        end
     end
-
 end
 part_2(input)
