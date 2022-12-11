@@ -1,5 +1,6 @@
 # https://adventofcode.com/2022/day/11
 using AdventOfCode
+using BenchmarkTools
 
 input = readlines("data/day_11.txt")
 t1 = readlines("data/d11t1.txt")
@@ -88,24 +89,19 @@ function part_2(input)
     monkeys, operations, conditions = initialize!(input)
     monkey_counts = zeros(length(monkeys))
     resolver = resolve_worry(input)
-    @show monkeys
     for round in 1:10000
         for i in 1:length(monkeys)
-            monkey = monkeys[i]
-            cond = conditions[i]
-            op = eval(operations[i])
+            @inbounds monkey = monkeys[i]
+            @inbounds cond = conditions[i]
+            @inbounds op = eval(operations[i])
             for _ in 1:length(monkey)
-                monkey_counts[i] += 1
+                @inbounds monkey_counts[i] += 1
                 worry = popfirst!(monkey)
                 worry = op(worry)
                 worry = resolver(worry)
                 push!(monkeys[cond(worry)], worry)
             end
-            monkeys[i] = monkey
-        end
-        if round % 1000 == 0 || round ∈ [1, 20, 100]
-            @info round
-            println.(enumerate(monkey_counts))
+            @inbounds monkeys[i] = monkey
         end
     end
     partialsort!(monkey_counts, 2, rev = true)
@@ -113,4 +109,4 @@ function part_2(input)
 end
 @info "part 2"
 @info part_2(t1)
-@info part_2(input)
+@info @btime part_2(input)
