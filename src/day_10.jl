@@ -35,7 +35,7 @@ function part_1(input)
 end
 part_1(t1)
 part_1(t2)
-part_1(input)
+@info "signal strength:" part_1(input)
 
 function part_2(input)
     clock = Int64[1]
@@ -76,11 +76,12 @@ function part_2(input)
         end
         col += 1
     end
-    pixels
+    @info "rendering CRT screen..."
     for row in eachrow(pixels)
         println()
         for col in row
-            print(col == 1 ? "#" : ".")
+            sleep(1/40)
+            print(col == 1 ? "🟥" : "🟩")
         end
     end
 end
