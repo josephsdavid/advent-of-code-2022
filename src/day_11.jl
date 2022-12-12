@@ -12,14 +12,14 @@ clean(input) = filter(!isempty, input)
 function get_monkeys(input)
     monkeys = []
     for monkey in filter(x -> !isspace(first(x)), clean(input))
-        push!(monkeys, Int128[])
+        push!(monkeys, Int64[])
     end
     return monkeys
 end
 
 function run_operation(inp, lhs, op, rhs)
     op = OPS[op]
-    (lhs, rhs) = map(x -> x == "old" ? inp : parse(Int128, x), (lhs, rhs))
+    (lhs, rhs) = map(x -> x == "old" ? inp : parse(Int64, x), (lhs, rhs))
     return op(lhs, rhs)
 end
 
@@ -33,7 +33,7 @@ function get_operations(input)
 end
 
 isdivisible(x, y) = x % y == 0
-parselast(x) = parse(Int128, last(split(x)))
+parselast(x) = parse(Int64, last(split(x)))
 
 function get_conditions(input)
     cids = findall(x -> occursin("Test", x), input)
@@ -54,7 +54,7 @@ end
 function initialize!(input, monkeys = get_monkeys(input))
     starting_items = filter(x -> occursin("Starting", x), input)
     for (i, items) in enumerate(starting_items)
-        append!(monkeys[i], parse.(Int128, split(last(split(items, ":")), ",")))
+        append!(monkeys[i], parse.(Int64, split(last(split(items, ":")), ",")))
     end
     operations = get_operations(input)
     conditions = get_conditions(input)
@@ -63,7 +63,7 @@ end
 
 function part_1(input)
     monkeys, operations, conditions = initialize!(input)
-    monkey_counts = zeros(length(monkeys))
+    monkey_counts = zeros(Int64,length(monkeys))
     @show monkeys
     for round in 1:20
         for i in 1:length(monkeys)
