@@ -59,4 +59,4 @@ function part_2(input)
     return findfirst(==([[2]]), vecs) * findfirst(==([[6]]), vecs)
 end
 part_2(t1)
-@info part_2(input)
+@info @btime part_2(input)
